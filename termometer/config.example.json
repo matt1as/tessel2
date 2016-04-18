@@ -1,0 +1,9 @@
+{
+  "keen" : {
+      "projectId" : "<Project ID",
+      "writeKey" : "<WriteKey>",
+      "collection" : "Climate"
+  },
+  "sensor" : { "interval" : "5000", "unit" : "c" }
+
+}
