@@ -4,6 +4,6 @@
       "writeKey" : "<WriteKey>",
       "collection" : "Climate"
   },
-  "sensor" : { "interval" : "5000", "unit" : "c" }
+  "sensor" : { "port": "A", "interval" : "5000", "unit" : "c" }
 
 }

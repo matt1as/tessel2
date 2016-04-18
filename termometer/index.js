@@ -2,7 +2,7 @@ var tessel = require('tessel');
 var config = require('./config.json'); //with path
 
 var climatelib = require('climate-si7020');
-var climate = climatelib.use(tessel.port['A']);
+var climate = climatelib.use(tessel.port[config.sensor.port]);
 
 var Keen = require('keen.io');
 var keen = Keen.configure({
@@ -14,8 +14,8 @@ climate.on('ready', function(){
   setInterval(function(){
     climate.readHumidity(function(err, humid){
       climate.readTemperature(config.sensor.unit, function(err, temp){
+        var climateData = '{"temperature": '+temp+', "humidity": '+humid+' }';
         sendToCloud(temp, humid);
-        console.log('Degrees:', temp + config.sensor.unit, 'Humidity:', humid + '%RH');
       });
     });
   }, config.sensor.interval);
@@ -26,12 +26,11 @@ climate.on('error', function(err) {
 });
 
 
-function sendToCloud(tdata, hdata, cb) {
+function sendToCloud(tdata, hdata) {
   keen.addEvent("climate", {
    "temp": tdata,
    "humidity": hdata
-
   }, function(){
-    console.log("added event");
+    console.log("Added climate with data temperature: " + tdata +", humidity: " + hdata);
   });
 }
