@@ -14,7 +14,6 @@ climate.on('ready', function(){
   setInterval(function(){
     climate.readHumidity(function(err, humid){
       climate.readTemperature(config.sensor.unit, function(err, temp){
-        var climateData = '{"temperature": '+temp+', "humidity": '+humid+' }';
         sendToCloud(temp, humid);
       });
     });
