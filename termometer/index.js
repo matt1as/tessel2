@@ -10,11 +10,16 @@ var keen = Keen.configure({
     writeKey: config.keen.writeKey,
 });
 
+var previousTemp = 0;
+
 climate.on('ready', function(){
   setInterval(function(){
     climate.readHumidity(function(err, humid){
       climate.readTemperature(config.sensor.unit, function(err, temp){
-        sendToCloud(temp, humid);
+        if( Math.abs(previousTemp - temp ) > config.sensor.delta ) { // Only send to cloud if temp has changed more than delta.
+          previousTemp = temp;
+          sendToCloud(temp, humid);
+        }
       });
     });
   }, config.sensor.interval);
